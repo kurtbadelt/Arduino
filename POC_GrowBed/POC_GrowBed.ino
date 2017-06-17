@@ -10,30 +10,38 @@ void setup() {
 
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void leerSensores(){
   int nivelLuz = analogRead(sensorLuz);
   int error;
   float temperatura;
   float humedad;
+  error = sensorDHT.read(humedad, temperatura);
+  imprimirLecturas(nivelLuz,error,temperatura,humedad);
+  delay(1000);
+}
 
-         if((error = sensorDHT.read(humedad, temperatura)) == 0)    // Si devuelve 0 es que ha leido bien
-          {
-             Serial.print("Temperatura: ");
-             Serial.print(temperatura);
-             Serial.print(" /Humedad: ");
-             Serial.print(humedad);
-             Serial.print(" /Nivel de Luz: ");
-             Serial.print(nivelLuz);
+void imprimirLecturas(int luz, int error, float temp, float hum){
+if(error==0){ 
+             Serial.print("->Temperatura: ");
+             Serial.print(temp);
+             Serial.print(" ->Humedad: ");
+             Serial.print(hum);
+             Serial.print(" ->Nivel de Luz: ");
+             Serial.print(luz);
              Serial.println();
-          }
-       else
-          {
+  }
+else{ 
              Serial.println();
              Serial.print("Error Num :");
              Serial.print(error);
-             Serial.println();
-          }
-       delay(1000);            //Recordad que solo lee una vez por segundo
+             Serial.println();  
+}
+
+}
+
+void loop() {
+
+leerSensores();
+           
 
 }
