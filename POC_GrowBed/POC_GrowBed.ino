@@ -2,7 +2,9 @@
 
   
   int sensorLuz =0;
+  int sensorHumedadS = 1;
   int sensorTempH=2;
+  
   DHT11 sensorDHT(sensorTempH);
   const long baudRate=115200;
   const long interval = 3000;
@@ -26,11 +28,12 @@
     
       previousMillis = currentMillis; 
       int nivelLuz = analogRead(sensorLuz);
+      int nivelHumedadSuelo = analogRead(sensorHumedadS);
       int error;
       float temperatura;
       float humedad;
       error = sensorDHT.read(humedad, temperatura);
-      imprimirLecturas(nivelLuz,error,temperatura,humedad);
+      imprimirLecturas(nivelLuz,error,temperatura,humedad,nivelHumedadSuelo);
     
     }
 
@@ -38,7 +41,7 @@
     
   }
   
-  void imprimirLecturas(int luz, int error, float temp, float hum){
+  void imprimirLecturas(int luz, int error, float temp, float hum,int soilMoist){
   if(error==0){ 
                Serial.print("Temperatura|");
                Serial.print(temp);
@@ -46,6 +49,8 @@
                Serial.print(hum);
                Serial.print("|Nivel de Luz|");
                Serial.print(luz);
+               Serial.print("|Humead Suelo|");
+               Serial.print(soilMoist);
                Serial.println();
     }
   else{ 
